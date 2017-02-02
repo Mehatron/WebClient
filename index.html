@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Robotic Hand</title>
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.12.4.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="style/style.css" />
+        <link type="text/css" rel="stylesheet" href="style/controls.css" />
+        <script type="text/jabascript" src="js/communication.js"></script>
+    </head>
+    <body>
+        <div class="page">
+            <div class="header">
+                <h1>Robotic Hand</h1>
+            </div>
+            <div class="navigation">
+            </div>
+            <div class="main">
+                <button id="btnModeSelect">Automatic</button>
+                <br /><br />
+                <table>
+                    <tr>
+                        <td colspan="3"><button id="btnUp">^</button></td>
+                    </tr>
+                    <tr>
+                        <td><button id="btnLeft" class="arrow">&lt</button></td>
+                        <td><button id="btnDown" class="arrow">v</button></td>
+                        <td><button id="btnRight" class="arrow">&gt</button></td>
+                    </tr>
+                </table>
+                <button id="btnRotate">Rotate Up</button>
+                <button id="btnExtend">Extend</button><br />
+                <button id="btnGrab">Pick</button>
+            </div>
+        </div>
+        <div class="footer">
+            &copy 2016 Milos Zivlak, Pavle Kukavica, Milan Prica
+        </div>
+    </body>
+</html>
+
