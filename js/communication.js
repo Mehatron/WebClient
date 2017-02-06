@@ -1,61 +1,41 @@
 var socket;
 
-$(document).ready(function() {
-    socket = io.connect("http://" + document.domain + ":" + location.port);
+function connect() {
+    socket = new WebSocket("ws://localhost:8272/");
 
-    socket.on('update', function(data) {
-        $("#btnModeSelect").text(data.automatic);
-        $("#btnRotate").text(data.rotation);
-        $("#btnExtend").text(data.extend);
-        $("#btnGrab").text(data.grab);
-    });
+    socket.onmessage = function(e) {
+        recived(e.data);
+    };
+};
 
-    $("#btnModeSelect").click(function() {
-        if($(this).text() == "Automatic") {
-            socket.emit("automatic", true);
-        } else {
-            socket.emit("automatic", false);
-        }
-    });
+function disconnect() {
+    socket.close();
+};
 
-    $("#btnLeft").click(function() {
-        socket.emit("left");
-    });
+function send(data) {
+    socket.send(data);
+};
 
-    $("#btnRight").click(function() {
-        socket.emit("right");
-    });
+function recived(msg) {
+    data = JSON.parse(msg);
 
-    $("#btnUp").click(function () {
-        socket.emit("up");
-    });
+    if(data.mode == "automatic")
+        $("#btnModeSelect").html("Manual");
+    else
+        $("#btnModeSelect").html("Automatic")
 
-    $("#btnDown").click(function() {
-        socket.emit("down");
-    });
+    if(data.rotation_down)
+        $("#btnRotate").html("Rotation Up");
+    else if(data.rotation_up)
+        $("#btnRotate").html("Rotate Down");
 
-    $("#btnRotate").click(function() {
-        if($(this).text() == "Rotate Up") {
-            socket.emit("rotate_up");
-        } else {
-            socket.emit("rotate_down");
-        }
-    });
+    if(data.exteds_unextended)
+        $("#btnExtend").html("Extend");
+    else if(data.extends_extended)
+        $("#btnExtend").html("UnExtend");
 
-    $("#btnExtend").click(function() {
-        if($(this).text() == "Extend") {
-            socket.emit("extend", true);
-        } else {
-            socket.emit("extend", false);
-        }
-    });
-
-    $("#btnGrab").click(function() {
-        if($(this).text() == "Pick") {
-            socket.emit("grab", true);
-        } else {
-            socket.emit("grab", false);
-        }
-    });
-});
-
+    if(data.picked)
+        $("#btnGrab").html("Place");
+    else
+        $("#btnGrab").html("Pick");
+};
