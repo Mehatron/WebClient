@@ -1,7 +1,7 @@
 var socket;
 
 function connect() {
-    socket = new WebSocket("ws://localhost:8272/");
+    socket = new WebSocket("ws://" + document.domain + ":8272/");
 
     socket.onmessage = function(e) {
         recived(e.data);
@@ -25,14 +25,14 @@ function recived(msg) {
         $("#btnModeSelect").html("Automatic")
 
     if(data.rotation_down)
-        $("#btnRotate").html("Rotation Up");
+        $("#btnRotate").html("Rotate Up");
     else if(data.rotation_up)
         $("#btnRotate").html("Rotate Down");
 
-    if(data.exteds_unextended)
+    if(data.extends_unextended)
         $("#btnExtend").html("Extend");
     else if(data.extends_extended)
-        $("#btnExtend").html("UnExtend");
+        $("#btnExtend").html("Un Extend");
 
     if(data.picked)
         $("#btnGrab").html("Place");
