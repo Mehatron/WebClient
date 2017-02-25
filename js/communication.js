@@ -19,10 +19,30 @@ function send(data) {
 function recived(msg) {
     data = JSON.parse(msg);
 
-    if(data.mode == "automatic")
-        $("#btnModeSelect").html("Manual");
-    else
-        $("#btnModeSelect").html("Automatic")
+    if(data.mode == "lock")
+    {
+        $("#btnUp").prop("disabled", true);
+        $("#btnDown").prop("disabled", true);
+        $("#btnRight").prop("disabled", true);
+        $("#btnLeft").prop("disabled", true);
+        $("#btnRotate").prop("disabled", true);
+        $("#btnExtend").prop("disabled", true);
+        $("#btnGrab").prop("disabled", true);
+    } else
+    {
+        $("#btnUp").prop("disabled", false);
+        $("#btnDown").prop("disabled", false);
+        $("#btnRight").prop("disabled", false);
+        $("#btnLeft").prop("disabled", false);
+        $("#btnRotate").prop("disabled", false);
+        $("#btnExtend").prop("disabled", false);
+        $("#btnGrab").prop("disabled", false);
+
+        if(data.mode == "automatic")
+            $("#btnModeSelect").html("Manual");
+        else
+            $("#btnModeSelect").html("Automatic");
+    }
 
     if(data.rotation_down)
         $("#btnRotate").html("Rotate Up");
