@@ -1,120 +1,257 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Robotic Hand</title>
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="style/style.css" />
-        <script type="text/javascript" src="js/communication.js"></script>
+<head>
+    <title>Robotic Hand</title>
+    <meta charset="UTF-8"m>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+        .w3-row-padding img {margin-bottom: 12px}
+        /* Set the width of the sidenav to 120px */
+        .w3-sidenav {width: 120px;background: #222;}
+        /* Add a left margin to the "page content" that matches the width of the sidenav (120px) */
+        #main {margin-left: 120px}
+        /* Remove margins from "page content" on small screens */
+        @edia only screen and (max-width: 600px) {#main {margin-left: 0}}
 
-        <style>
-            body {
-                overflow: hidden;
-                background-color: #00b53c;
-            }
+        table td, th {
+            padding: 5px;
+            padding-bottom: 25px;
+            text-align: center;
+        }
+    </style>
 
-            .center {
-                width: 90%;
-                height: 80%;
-            }
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="js/communication.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            connect();
 
-            .navbar {
-                list-style-type: none;
-                display: table;
-                table-layout: fixed;
-                padding: 0px;
-                margin: 0px;
+            $("#btnModeSelect").click(function() {
+                if($(this).html() == "Automatic")
+                    send("mode_automatic");
+                else
+                    send("mode_manual");
+            });
 
-                position: fixed;
-                bottom: 0px;
-                left: 0px;
-                width: 100%;
-                height: 75px;
-            }
-            .navbar li {
-                display: table-cell;
-            }
-            .navbar a {
-                display: block;
-                width: 100%;
-                height: 100%;
-                margin: 0px;
-                padding: 25px;
-                font-size: 50px;
-                color: yellow;
-                background-color: #0049bf;
-                border-style: solid;
-                border: 1px;
-            }
-            .navbar a:hover {
-                background-color: gray;
-                background-color: #00d0ff;
-            }
+            $("#btnUp").click(function() {
+                send("move_up");
+            });
 
-            .left {
-                position: absolute;
-                left: 5px;
-                top: 5px;
-                background-color: #0049bf;
-                border-style: solid;
-                border: 1px;
-            }
-            .right {
-                position: absolute;
-                right: 5px;
-                top: 25px;
-                border: 1px;
-                background-color: #0049bf;
-                border-style: solid;
-                border: 1px;
-            }
-            a {
-                color: yellow;
-            }
-        </style>
-    </head>
+            $("#btnDown").click(function() {
+                send("move_down");
+            });
 
-    <body>
-        <div class="page">
-            <!--
-            <div class="header">
-                <h1>Robotic Hand</h1>
-            </div>
-            -->
-            <div class="left">
-                <a href="http://www.etspupin.edu.rs" target="_blank">
-                    <img src="img/etspupin.png" alt="ETS Mihajlo Pupin" /><br />
-                    etspupin.edu.rs
-                </a>
-            </div>
+            $("#btnRight").click(function() {
+                send("move_right");
+            });
 
-            <div class="right">
-                <a href="https://www.festo.com/cms/sr_rs/index.htm" target="_blank">
-                    <img src="img/festo.png" alt="Festo" width="200px" /><br />
-                    festo.com
-                </a>
-                <br />
-                <a href="http://www.fatek.com" target="_blank">
-                    <img src="img/fatek.png" alt="Fatek" /><br />
-                    fatek.com
-                </a>
-                <br /><br />
-                <a href="http://www.unitronics.com" target="_blank">
-                    <img src="img/unitronics.png" alt="Unitronics" width="200px" /><br />
-                    unitronics.com
-                </a>
-            </div>
+            $("#btnLeft").click(function() {
+                send("move_left");
+            });
 
-            <div class="center">
-                <img src="img/logo.png" alt="logo" />
-            </div>
-            <ul class="navbar">
-                <li>
-                    <a href="#">Galery</a>
-                </li>
-                <li>
-                    <a href="control.html">Control</a>
-                </li>
-            </ul>
+            $("#btnRotate").click(function() {
+                if($(this).html() == "Rotate Up")
+                    send("rotate_up");
+                else
+                    send("rotate_down");
+            });
+
+            $("#btnExtend").click(function() {
+                if($(this).html() == "Extend")
+                    send("extend");
+                else
+                    send("unextend");
+            });
+
+            $("#btnGrab").click(function() {
+                if($(this).html() == "Pick")
+                    send("pick");
+                else
+                    send("place");
+            });
+        });
+    </script>
+</head>
+<body class="w3-black">
+
+    <!-- Icon Bar (Sidenav - hidden on small screens) -->
+    <nav class="w3-sidenav w3-center w3-small w3-hide-small">
+        <!-- Avatar image in top left corner -->
+        <img src="img/dsc_5734_33055706036_o.jpg" style="width:100%">
+        <a class="w3-padding-large w3-black" href="#">
+            <i class="fa fa-home w3-xxlarge"></i>
+            <p>HOME</p>
+        </a>
+        <a class="w3-padding-large w3-hover-black" href="#constrol">
+            <i class="fa fa-eye w3-xxlarge"></i>
+            <p>CONTROL</p>
+        </a>
+        <a class="w3-padding-large w3-hover-black" href="#statistic">
+            <i class="fa fa-eye w3-xxlarge"></i>
+            <p>STATISTIC</p>
+        </a>
+        <a class="w3-padding-large w3-hover-black" href="#galery">
+            <i class="fa fa-eye w3-xxlarge"></i>
+            <p>GALERY</p>
+        </a>
+    </nav>
+
+    <!-- Navbar on small screens (Hidden on medium and large screens) -->
+    <div class="w3-top w3-hide-large w3-hide-medium" id="myNavbar">
+        <div class="w3-bar w3-black w3-opacity w3-hover-opacity-off w3-center w3-small">
+            <a class="w3-bar-item w3-button" style="width:25% !important" href="#">HOME</a>
+            <a class="w3-bar-item w3-button" style="width:25% !important" href="#control">CONTROL</a>
+            <a class="w3-bar-item w3-button" style="width:25% !important" href="#statistic">STATISTIC</a>
+            <a class="w3-bar-item w3-button" style="width:25% !important" href="#photos">PHOTOS</a>
         </div>
+    </div>
+
+    <!-- Page Content -->
+    <div class="w3-padding-large" id="main">
+        <!-- Header/Home -->
+        <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+            <h1 class="w3-jumbo">Robotic Hand</h1>
+            <p>Mechatronics</p>
+            <img src="img/dsc_5745_33097463755_o.jpg" alt="Robotic Hand" class="w3-image" width="992" height="1108">
+        </header>
+
+        <!-- Control Section -->
+        <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="control">
+            <h2 class="w3-text-light-grey">Control</h2>
+            <hr style="width:200px" class="w3-opacity">
+            <table align="center">
+                <tr>
+                    <td colspan="3" align="center">
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnMode">
+                            Mode
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center">
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnUp">
+                            ^
+                        </button>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnLeft">
+                            &lt
+                        </button>
+                    </td>
+                    <td>
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnDown">
+                            v
+                        </button>
+                    </td>
+                    <td>
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnRight">
+                            &gt
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnRotate">
+                            Rotate
+                        </button>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnExtend">
+                            Extend
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" align="center">
+                        <button class="w3-button w3-padding-large" type="button"
+                            id="btnGrab">
+                            Grab
+                        </button>
+                    </td>
+                </tr>
+            </table>
+            <p>
+            </p>
+        </div>
+
+        <div class="w3-content w3-justify w3-text-grey w3-padding-64" id="statistic">
+            <h2 class="w3-text-light-grey">Statistic</h2>
+            <hr style="width:200px" class="w3-opacity">
+            <div class="w3-row w3-center w3-padding-16 w3-section w3-light-grey">
+                <div class="w3-quarter w3-section">
+                    <span class="w3-xlarge">10</span><br>
+                    Actuators
+                </div>
+                <div class="w3-quarter w3-section">
+                    <span class="w3-xlarge">11</span><br>
+                    Sensors
+                </div>
+                <div class="w3-quarter w3-section">
+                    <span class="w3-xlarge">2</span><br>
+                    PLC
+                </div>
+                <div class="w3-quarter w3-section">
+                    <span class="w3-xlarge">3</span><br>
+                    Members
+                </div>
+            </div>
+
+            <!-- Galery Section -->
+            <div class="w3-padding-64 w3-content" id="galery">
+                <h2 class="w3-text-light-grey">Galery</h2>
+                <hr style="width:200px" class="w3-opacity">
+
+                <!-- Grid for photos -->
+                <div class="w3-row-padding" style="margin:0 -16px">
+                    <div class="w3-half">
+                        <img src="/w3images/wedding.jpg" style="width:100%">
+                        <img src="/w3images/rocks.jpg" style="width:100%">
+                        <img src="/w3images/sailboat.jpg" style="width:100%">
+                    </div>
+
+                    <div class="w3-half">
+                        <img src="/w3images/underwater.jpg" style="width:100%">
+                        <img src="/w3images/chef.jpg" style="width:100%">
+                        <img src="/w3images/wedding.jpg" style="width:100%">
+                        <img src="/w3images/p6.jpg" style="width:100%">
+                    </div>
+                    <!-- End photo grid -->
+                </div>
+                <!-- End galery Section -->
+            </div>
+
+            <!-- Footer -->
+            <footer class="w3-content w3-padding-64 w3-text-grey w3-xlarge">
+                <!--
+                <i class="fa fa-facebook-official w3-hover-text-indigo"></i>
+                <i class="fa fa-instagram w3-hover-text-purple"></i>
+                <i class="fa fa-snapchat w3-hover-text-yellow"></i>
+                <i class="fa fa-pinterest-p w3-hover-text-red"></i>
+                <i class="fa fa-twitter w3-hover-text-light-blue"></i>
+                <i class="fa fa-linkedin w3-hover-text-indigo"></i>
+                -->
+                <a href="http://github.com/Mehatron/" target="_blank">
+                    <i class="fa fa-github w3-hover-text-indigo">Mehatron</i>
+                </a>
+                <p class="w3-medium">&copy 2016-2017 Milos Zivlak, Pavle Kukavica, Milan Prica</a></p>
+              <!-- End footer -->
+            </footer>
+
+            <!-- END PAGE CONTENT -->
+        </div>
+
     </body>
 </html>
