@@ -21,6 +21,7 @@ function recived(msg) {
 
     if(data.mode == "lock")
     {
+        $("#btnMode").prop("disabled", true);
         $("#btnUp").prop("disabled", true);
         $("#btnDown").prop("disabled", true);
         $("#btnRight").prop("disabled", true);
@@ -30,6 +31,7 @@ function recived(msg) {
         $("#btnGrab").prop("disabled", true);
     } else
     {
+        $("#btnMode").prop("disabled", false);
         $("#btnUp").prop("disabled", false);
         $("#btnDown").prop("disabled", false);
         $("#btnRight").prop("disabled", false);
@@ -39,9 +41,9 @@ function recived(msg) {
         $("#btnGrab").prop("disabled", false);
 
         if(data.mode == "automatic")
-            $("#btnModeSelect").html("Manual");
+            $("#btnMode").html("Manual");
         else
-            $("#btnModeSelect").html("Automatic");
+            $("#btnMode").html("Automatic");
     }
 
     if(data.rotation_down)
